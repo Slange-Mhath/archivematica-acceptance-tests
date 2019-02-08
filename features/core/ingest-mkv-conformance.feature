@@ -19,6 +19,7 @@ Feature: Ingest (i.e., post-normalization) conformance check
     When the user waits for the "Approve normalization (review)" decision point to appear during ingest
     Then all preservation conformance checks in the normalization report have value <validation_result>
     When the user chooses "Approve" at decision point "Approve normalization (review)" during ingest
+    And the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
     And the user waits for the "Store AIP (review)" decision point to appear during ingest
     Then all PREMIS implementation-check-type validation events have eventOutcome = <event_outcome>
 

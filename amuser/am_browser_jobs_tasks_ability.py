@@ -112,6 +112,7 @@ class ArchivematicaBrowserJobsTasksAbility(
             '1.6': self._parse_tasks_table_am_1_6,
             '1.7': self._parse_tasks_table_am_gte_1_7,
             '1.8': self._parse_tasks_table_am_gte_1_7,
+            '1.9': self._parse_tasks_table_am_gte_1_7,
         }.get(vn, self._parse_tasks_table_am_1_6)(tasks_url, table_dict)
 
     def _parse_tasks_table_am_1_6(self, tasks_url, table_dict):
