@@ -26,7 +26,7 @@ Feature: Metadata-only AIP re-ingest
     And the reminder to add metadata is enabled
     When a transfer is initiated on directory ~/archivematica-sampledata/SampleTransfers/Images/pictures
     And the user waits for the "Assign UUIDs to directories?" decision point to appear and chooses "No" during transfer
-    And the user waits for the "Select file format identification command" decision point to appear and chooses "Identify using Fido" during transfer
+    And the user waits for the "Do you want to perform file format identification?" decision point to appear and chooses "No" during transfer
     And the user waits for the "Perform policy checks on originals?" decision point to appear and chooses "No" during transfer
     And the user waits for the "Create SIP(s)" decision point to appear and chooses "Create single SIP and continue processing" during transfer
     And the user waits for the "Normalize" decision point to appear and chooses "Normalize for preservation" during ingest
@@ -34,7 +34,7 @@ Feature: Metadata-only AIP re-ingest
     And the user waits for the "Perform policy checks on preservation derivatives?" decision point to appear and chooses "No" during ingest
     And the user waits for the "Perform policy checks on access derivatives?" decision point to appear and chooses "No" during ingest
     And the user waits for the "Reminder: add metadata if desired" decision point to appear and chooses "Continue" during ingest
-    And the user waits for the "Select file format identification command|Process submission documentation" decision point to appear and chooses "Identify using Fido" during ingest
+    And the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
     And the user waits for the "Bind PIDs?" decision point to appear and chooses "No" during ingest
     And the user waits for the "Document empty directories?" decision point to appear and chooses "No" during ingest
     And the user waits for the "Store AIP (review)" decision point to appear during ingest
@@ -51,7 +51,7 @@ Feature: Metadata-only AIP re-ingest
     And the user waits for the "Reminder: add metadata if desired" decision point to appear during ingest
     And the user adds metadata
     And the user chooses "Continue" at decision point "Reminder: add metadata if desired" during ingest
-    And the user waits for the "Select file format identification command|Process submission documentation" decision point to appear and chooses "Identify using Fido" during ingest
+    And the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
     And the user waits for the "Bind PIDs?" decision point to appear and chooses "No" during ingest
     And the user waits for the "Document empty directories?" decision point to appear and chooses "No" during ingest
     And the user waits for the "Store AIP (review)" decision point to appear during ingest

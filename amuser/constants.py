@@ -224,6 +224,8 @@ MICRO_SERVICES2GROUPS = {
     'Select compression level': ('Prepare AIP',),
     'Select file format identification command': (
         'Identify file format', 'Process submission documentation'),
+    'Do you want to perform file format identification?': (
+        'Identify file format', 'Process submission documentation'),
     'Select pre-normalize file format identification command': ('Normalize',),
     'Serialize Dublin Core metadata to disk': ('Create SIP from Transfer',),
     'Set bag file permissions': ('Prepare AIP',),
@@ -305,6 +307,8 @@ PC_DECISION2ID = {
         'id_56eebd45-5600-4768-a8c2-ec0114555a3d',
     'Select file format identification command (Transfer)':
         'id_f09847c2-ee51-429a-9478-a860477f6b8d',
+    'Perform file format identification (Transfer)':
+        'id_f09847c2-ee51-429a-9478-a860477f6b8d',
     'Extract packages':
         'id_dec97e3c-5598-4b99-b26e-f87a435a6b7f',
     'Delete packages after extraction':
@@ -314,6 +318,8 @@ PC_DECISION2ID = {
     'Create SIP(s)':
         'id_bb194013-597c-4e4a-8493-b36d190f8717',
     'Select file format identification command (Ingest)':
+        'id_7a024896-c4f7-4808-a240-44c87c762bc5',
+    'Perform file format identification (Ingest)':
         'id_7a024896-c4f7-4808-a240-44c87c762bc5',
     'Normalize':
         'id_cb8e5706-e73f-472f-ad9b-d1236af8095f',

@@ -410,10 +410,16 @@ class ArchivematicaBrowserAbility(
         self.set_processing_config_decision(
             decision_label='Generate transfer structure report',
             choice_value='No')
-        self.set_processing_config_decision(
-            decision_label=('Select file format identification command'
-                            ' (Transfer)'),
-            choice_value='None')
+        if self.vn in ('1.7', '1.8'):
+            self.set_processing_config_decision(
+                decision_label=('Select file format identification command'
+                                ' (Transfer)'),
+                choice_value='None')
+        elif self.vn in ('1.9'):
+            self.set_processing_config_decision(
+                decision_label=('Perform file format identification'
+                                ' (Transfer)'),
+                choice_value='None')
         self.set_processing_config_decision(
             decision_label='Extract packages',
             choice_value='Yes')
@@ -426,9 +432,16 @@ class ArchivematicaBrowserAbility(
         self.set_processing_config_decision(
             decision_label='Create SIP(s)',
             choice_value='None')
-        self.set_processing_config_decision(
-            decision_label='Select file format identification command (Ingest)',
-            choice_value='Use existing data')
+        if self.vn in ('1.7', '1.8'):
+            self.set_processing_config_decision(
+                decision_label=('Select file format identification command'
+                                ' (Ingest)'),
+                choice_value='Use existing data')
+        elif self.vn in ('1.9'):
+            self.set_processing_config_decision(
+                decision_label=('Perform file format identification'
+                                ' (Ingest)'),
+                choice_value='No, use existing data')
         self.set_processing_config_decision(
             decision_label='Normalize',
             choice_value='None')
@@ -460,7 +473,7 @@ class ArchivematicaBrowserAbility(
         self.set_processing_config_decision(
             decision_label='Store DIP location',
             choice_value='None')
-        if self.vn in ('1.7', '1.8'):
+        if self.vn in ('1.7', '1.8', '1.9'):
             self.set_processing_config_decision(
                 decision_label='Perform policy checks on access derivatives',
                 choice_value='None')
