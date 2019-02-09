@@ -18,7 +18,8 @@ Feature: Ingest policy check
     And the user waits for the "Policy checks for access derivatives" micro-service to complete during ingest
     Then the "Policy checks for access derivatives" micro-service output is "<microservice_output>" during ingest
     And all policy check for access derivatives tasks indicate <event_outcome>
-    When the user waits for the AIP to appear in archival storage
+    When the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
+    And the user waits for the AIP to appear in archival storage
     And the user downloads the AIP
     And the user decompresses the AIP
     Then the submissionDocumentation directory of the AIP does not contain a copy of the MediaConch policy file <policy_file>
@@ -41,7 +42,8 @@ Feature: Ingest policy check
     And a transfer is initiated on directory <transfer_path>
     And the user waits for the "Policy checks for preservation derivatives" micro-service to complete during ingest
     Then the "Policy checks for preservation derivatives" micro-service output is "<microservice_output>" during ingest
-    When the user waits for the "Store AIP (review)" decision point to appear during ingest
+    When the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
+    And the user waits for the "Store AIP (review)" decision point to appear during ingest
     Then all PREMIS policy-check-type validation events have eventOutcome = <event_outcome>
     When the user chooses "Store AIP" at decision point "Store AIP (review)" during ingest
     And the user waits for the AIP to appear in archival storage
@@ -68,7 +70,8 @@ Feature: Ingest policy check
     And a transfer is initiated on directory <transfer_path>
     And the user waits for the "Policy checks for preservation derivatives" micro-service to complete during ingest
     Then the "Policy checks for preservation derivatives" micro-service output is "<microservice_output>" during ingest
-    When the user waits for the "Store AIP (review)" decision point to appear during ingest
+    When the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
+    And the user waits for the "Store AIP (review)" decision point to appear during ingest
     Then all PREMIS policy-check-type validation events have eventOutcome = <event_outcome>
     When the user chooses "Store AIP" at decision point "Store AIP (review)" during ingest
     And the user waits for the AIP to appear in archival storage
@@ -95,7 +98,8 @@ Feature: Ingest policy check
     And the user waits for the "Policy checks for access derivatives" micro-service to complete during ingest
     Then policy checks for access derivatives micro-service output is <microservice_output>
     And all policy check for access derivatives tasks indicate <event_outcome>
-    When the user waits for the AIP to appear in archival storage
+    When the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
+    And the user waits for the AIP to appear in archival storage
     And the user downloads the AIP
     And the user decompresses the AIP
     Then the submissionDocumentation directory of the AIP does not contain a copy of the MediaConch policy file <policy_file>
