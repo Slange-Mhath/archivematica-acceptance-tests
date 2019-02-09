@@ -14,7 +14,8 @@ Feature: Transfer policy check
     And the user waits for the "Policy checks for originals" micro-service to complete during transfer
     Then the "Policy checks for originals" micro-service output is "<microservice_output>" during transfer
     And all policy check for originals tasks indicate <event_outcome>
-    When the user waits for the AIP to appear in archival storage
+    When the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
+    And the user waits for the AIP to appear in archival storage
     And the user downloads the AIP
     And the user decompresses the AIP
     # TODO: where does the transfer policy check policy end up?

@@ -170,6 +170,8 @@ def step_impl(context):
 def step_impl(context):
     context.execute_steps(
         'Given a base processing configuration for MediaConch tests\n'
+        'And the processing config decision "Perform file format'
+        ' identification (Transfer)" is set to "Yes"\n'
         'And the processing config decision "Perform policy checks on'
         ' originals" is set to "Yes"\n'
         'And the processing config decision "Normalize" is set to "Do not'
