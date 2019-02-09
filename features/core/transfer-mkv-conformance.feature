@@ -10,7 +10,8 @@ Feature: Transfer (i.e., pre-ingest) Conformance Check
     When a transfer is initiated on directory <transfer_path>
     And the user waits for the "Validate formats" micro-service to complete during transfer
     Then the "Validate formats" micro-service output is "<microservice_output>" during transfer
-    When the user waits for the "Store AIP (review)" decision point to appear during ingest
+    When the user waits for the "Do you want to perform file format identification?|Process submission documentation" decision point to appear and chooses "No" during ingest
+    And the user waits for the "Store AIP (review)" decision point to appear during ingest
     Then all PREMIS implementation-check-type validation events have eventOutcome = <event_outcome>
 
     Examples: File Validity Possibilities
