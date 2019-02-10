@@ -109,8 +109,6 @@ def step_impl(context):
         ' in its default state\n'
         'And the processing config decision "Assign UUIDs to directories" is'
         ' set to "Yes"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Transfer)" is set to "Identify using Fido"\n'
         'And the processing config decision "Create SIP(s)" is set to "Create'
         ' single SIP and continue processing"\n'
         'And the processing config decision "Normalize" is set to "Normalize'
@@ -118,9 +116,6 @@ def step_impl(context):
         'And the processing config decision "Approve normalization" is set to'
         ' "Yes"\n'
         'And the processing config decision "Bind PIDs" is set to "No"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Submission documentation & metadata)" is set to'
-        ' "Identify using Fido"\n'
         'And the processing config decision "Perform policy checks on'
         ' preservation derivatives" is set to "No"\n'
         'And the processing config decision "Perform policy checks on access'
@@ -129,6 +124,11 @@ def step_impl(context):
         ' originals" is set to "No"\n'
         'And the processing config decision "Document empty directories"'
         ' is set to "Yes"\n'
+        'And the processing config decision "Perform file format'
+        ' identification (Transfer)" is set to "No"\n'
+        'And the processing config decision "Perform file format'
+        ' identification (Submission documentation & metadata)" is set'
+        ' to "No"\n'
     )
 
 

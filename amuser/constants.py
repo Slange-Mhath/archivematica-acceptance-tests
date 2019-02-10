@@ -332,6 +332,9 @@ PC_DECISION2ID = {
     'Select file format identification command '
     '(Submission documentation & metadata)':
         'id_087d27be-c719-47d8-9bbb-9a7d8b609c44',
+    'Perform file format identification '
+    '(Submission documentation & metadata)':
+        'id_087d27be-c719-47d8-9bbb-9a7d8b609c44',
     'Select compression algorithm':
         'id_01d64f58-8295-4b7b-9cab-8f1b153a504f',
     'Select compression level':
