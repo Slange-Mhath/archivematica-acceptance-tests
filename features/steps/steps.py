@@ -134,8 +134,8 @@ def step_impl(context):
         ' set to "No"\n'
         'And the processing config decision "Document empty directories" is'
         ' set to "No"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Transfer)" is set to "Identify using Siegfried"\n'
+        'And the processing config decision "Perform file format'
+        ' identification (Transfer)" is set to "Yes"\n'
         'And the processing config decision "Perform policy checks on'
         ' originals" is set to "No"\n'
         'And the processing config decision "Create SIP(s)" is set to "Create'
@@ -148,9 +148,9 @@ def step_impl(context):
         ' preservation derivatives" is set to "No"\n'
         'And the processing config decision "Perform policy checks on access'
         ' derivatives" is set to "No"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Submission documentation & metadata)" is set to'
-        ' "Identify using Siegfried"\n'
+        'And the processing config decision "Perform file format '
+        'identification (Submission documentation & metadata)" is set to'
+        ' "Yes"\n'
         'And the processing config decision "Bind PIDs" is set to "No"'
     )
 
