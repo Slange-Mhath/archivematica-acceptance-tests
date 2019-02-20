@@ -123,8 +123,8 @@ def step_impl(context):
 def step_impl(context):
     context.execute_steps(
         'Given a base processing configuration for MediaConch tests\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Transfer)" is set to "Identify using Siegfried"\n'
+        'And the processing config decision "Perform file format'
+        ' identification (Transfer)" is set to "Yes"\n'
         'And the processing config decision "Normalize" is set to "Normalize'
         ' for preservation"'
     )
