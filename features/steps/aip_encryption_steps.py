@@ -280,20 +280,21 @@ def step_impl(context, aip_description, second_aip_description, event_type):
             './/mets:mdWrap[@MDTYPE="PREMIS:OBJECT"]', context.am_user.mets.mets_nsmap
         )
         premis_relationship = premis_object_el.find(
-            "mets:xmlData/premis:object/premis:relationship",
+            "mets:xmlData/premis3:object/premis3:relationship",
             context.am_user.mets.mets_nsmap,
         )
         premis_relationship_type = premis_relationship.find(
-            "premis:relationshipType", context.am_user.mets.mets_nsmap
+            "premis3:relationshipType", context.am_user.mets.mets_nsmap
         ).text.strip()
         assert premis_relationship_type == "derivation"
         premis_related_object_uuid = premis_relationship.find(
-            "premis:relatedObjectIdentification/" "premis:relatedObjectIdentifierValue",
+            "premis3:relatedObjectIdentification/"
+            "premis3:relatedObjectIdentifierValue",
             context.am_user.mets.mets_nsmap,
         ).text.strip()
         assert second_aip_uuid == premis_related_object_uuid
         premis_related_event_uuid = premis_relationship.find(
-            "premis:relatedEventIdentification/" "premis:relatedEventIdentifierValue",
+            "premis3:relatedEventIdentification/" "premis3:relatedEventIdentifierValue",
             context.am_user.mets.mets_nsmap,
         ).text.strip()
         assert event_uuid == premis_related_event_uuid
@@ -343,7 +344,7 @@ def step_impl(context):
             './/mets:mdWrap[@MDTYPE="PREMIS:EVENT"]', context.am_user.mets.mets_nsmap
         ):
             premis_event_type_el = premis_event_el.find(
-                "mets:xmlData/premis:event/premis:eventType",
+                "mets:xmlData/premis3:event/premis3:eventType",
                 context.am_user.mets.mets_nsmap,
             )
             if premis_event_type_el.text.strip() == "encryption":
@@ -353,14 +354,14 @@ def step_impl(context):
         # <premis:eventDetail>program=gpg (GPG); version=1.4.16; python-gnupg;
         # version=0.4.0</premis:eventDetail>
         premis_event_detail = premis_event.find(
-            "mets:xmlData/premis:event/premis:eventDetail",
+            "mets:xmlData/premis3:event/premis3:eventDetail",
             context.am_user.mets.mets_nsmap,
         ).text
         assert "GPG" in premis_event_detail
         assert "version=" in premis_event_detail
         premis_event_od_note = premis_event.find(
-            "mets:xmlData/premis:event/premis:eventOutcomeInformation/"
-            "premis:eventOutcomeDetail/premis:eventOutcomeDetailNote",
+            "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/"
+            "premis3:eventOutcomeDetail/premis3:eventOutcomeDetailNote",
             context.am_user.mets.mets_nsmap,
         ).text.strip()
         assert 'Status="encryption ok"' in premis_event_od_note
@@ -589,7 +590,7 @@ def assert_pointer_premis_event(**kwargs):
             kwargs["context"].am_user.mets.mets_nsmap,
         ):
             premis_event_type_el = premis_event_el.find(
-                "mets:xmlData/premis:event/premis:eventType",
+                "mets:xmlData/premis3:event/premis3:eventType",
                 kwargs["context"].am_user.mets.mets_nsmap,
             )
             if premis_event_type_el.text.strip() == kwargs["event_type"]:
@@ -597,14 +598,14 @@ def assert_pointer_premis_event(**kwargs):
                 break
         assert premis_event is not None
         premis_event_uuid = premis_event.find(
-            "mets:xmlData/premis:event/premis:eventIdentifier/"
-            "premis:eventIdentifierValue",
+            "mets:xmlData/premis3:event/premis3:eventIdentifier/"
+            "premis3:eventIdentifierValue",
             kwargs["context"].am_user.mets.mets_nsmap,
         ).text.strip()
         if kwargs.get("in_evt_dtl"):
             in_evt_dtl = kwargs["in_evt_dtl"] or []
             premis_event_detail = premis_event.find(
-                "mets:xmlData/premis:event/premis:eventDetail",
+                "mets:xmlData/premis3:event/premis3:eventDetail",
                 kwargs["context"].am_user.mets.mets_nsmap,
             ).text.strip()
             for substr in in_evt_dtl:
@@ -612,8 +613,8 @@ def assert_pointer_premis_event(**kwargs):
         if kwargs.get("in_evt_out"):
             in_evt_out = kwargs["in_evt_out"] or []
             premis_event_out = premis_event.find(
-                "mets:xmlData/premis:event/premis:eventOutcomeInformation/"
-                "premis:eventOutcome",
+                "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/"
+                "premis3:eventOutcome",
                 kwargs["context"].am_user.mets.mets_nsmap,
             ).text.strip()
             for substr in in_evt_out:
@@ -621,8 +622,8 @@ def assert_pointer_premis_event(**kwargs):
         if kwargs.get("in_evt_out_dtl_nt"):
             in_evt_out_dtl_nt = kwargs["in_evt_out_dtl_nt"] or []
             premis_event_od_note = premis_event.find(
-                "mets:xmlData/premis:event/premis:eventOutcomeInformation/"
-                "premis:eventOutcomeDetail/premis:eventOutcomeDetailNote",
+                "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/"
+                "premis3:eventOutcomeDetail/premis3:eventOutcomeDetailNote",
                 kwargs["context"].am_user.mets.mets_nsmap,
             ).text.strip()
             for substr in in_evt_out_dtl_nt:
@@ -708,22 +709,22 @@ def assert_pointer_transform_file_encryption(pointer_path, ns, fingerprint=None)
                 "TRANSFORMKEY fingerprint {} does not match expected"
                 " fingerprint {}".format(transform_key, fingerprint)
             )
-        # premis:compositionLevel incremented
+        # premis3:compositionLevel incremented
         compos_lvl_el = doc.find(
-            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis:object/"
-            "premis:objectCharacteristics/premis:compositionLevel",
+            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis3:object/"
+            "premis3:objectCharacteristics/premis3:compositionLevel",
             ns,
         )
         assert compos_lvl_el is not None
         assert compos_lvl_el.text.strip() == "2"
-        # premis:inhibitors added
+        # premis3:inhibitors added
         inhibitors_el = doc.find(
-            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis:object/"
-            "premis:objectCharacteristics/premis:inhibitors",
+            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis3:object/"
+            "premis3:objectCharacteristics/premis3:inhibitors",
             ns,
         )
         assert inhibitors_el is not None
-        assert inhibitors_el.find("premis:inhibitorType", ns).text.strip() == ("GPG")
-        assert inhibitors_el.find("premis:inhibitorTarget", ns).text.strip() == (
+        assert inhibitors_el.find("premis3:inhibitorType", ns).text.strip() == ("GPG")
+        assert inhibitors_el.find("premis3:inhibitorTarget", ns).text.strip() == (
             "All content"
         )
