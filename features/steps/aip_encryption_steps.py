@@ -11,8 +11,13 @@ from features.steps import utils
 
 
 GPG_KEYS_DIR = "etc/gpgkeys"
-STDRD_GPG_TB_REL_PATH = (
-    "var/archivematica/sharedDirectory/www/AIPsStore/transferBacklogEncrypted"
+STDRD_GPG_TB_REL_PATH = os.path.join(
+    "var",
+    "archivematica",
+    "sharedDirectory",
+    "www",
+    "AIPsStore",
+    "transferBacklogEncrypted",
 )
 
 
@@ -81,8 +86,7 @@ def step_impl(context):
 
 
 @given(
-    "the default AIP Storage location has the GPG-encrypted Replicator"
-    " location as its replicator"
+    "the default AIP Storage location has the GPG-encrypted Replicator location as its replicator"
 )
 def step_impl(context):
     """Presumes that the GPG-encrypted replicator location's UUID is
@@ -95,8 +99,7 @@ def step_impl(context):
 
 
 @given(
-    "the user has ensured that there is a location in the GPG Space with"
-    " attributes {attributes}"
+    "the user has ensured that there is a location in the GPG Space with attributes {attributes}"
 )
 def step_impl(context, attributes):
     """Ensure that there is a storage location in the space referenced in
@@ -116,12 +119,13 @@ def step_impl(context):
     appear in archival storage.
     """
     context.execute_steps(
-        "Given the default processing config is in its default state\n"
-        "And there is a standard GPG-encrypted space in the storage service\n"
-        "And there is a standard GPG-encrypted AIP Storage location in the"
-        " storage service\n"
-        "When an encrypted AIP is created from the directory at"
-        " ~/archivematica-sampledata/SampleTransfers/BagTransfer"
+        "Given there is a standard GPG-encrypted space in the storage service\n"
+        "And there is a standard GPG-encrypted AIP Storage location in the storage service\n"
+        "And a fully automated default processing config\n"
+        'And the processing config decision "Assign UUIDs to directories" is set to "No"\n'
+        'And the processing config decision "Bind PIDs" is set to "No"\n'
+        "And automated processing configured to Store AIP Encrypted in standard Archivematica Directory\n"
+        "When an encrypted AIP is created from the directory at ~/archivematica-sampledata/SampleTransfers/BagTransfer"
     )
 
 
@@ -138,8 +142,7 @@ def step_impl(context, key_fname):
 
 
 @when(
-    "the user creates a new GPG key and assigns it to the standard"
-    " GPG-encrypted space"
+    "the user creates a new GPG key and assigns it to the standard GPG-encrypted space"
 )
 def step_impl(context):
     # Create the new GPG key
@@ -164,14 +167,31 @@ def step_impl(context):
     )
 
 
+@given("automated processing with all decision points resolved")
+def step_impl(context):
+    """Utilizes the Bind PIDs automated processing, but plugs the gaps where
+    decisions haven't been resolved.
+    """
+    context.execute_steps(
+        "Given a fully automated default processing config\n"
+        'And the processing config decision "Assign UUIDs to directories" is set to "No"\n'
+        'And the processing config decision "Bind PIDs" is set to "No"\n'
+    )
+
+
+@given(
+    "automated processing configured to Store AIP Encrypted in standard Archivematica Directory"
+)
+def step_impl(context):
+    context.execute_steps(
+        'Given the processing config decision "Store AIP location" is set to "Store AIP Encrypted in standard Archivematica Directory"\n'
+    )
+
+
 @when("an encrypted AIP is created from the directory at {transfer_path}")
 def step_impl(context, transfer_path):
     context.execute_steps(
         "When a transfer is initiated on directory {}\n"
-        "And standard AIP-creation decisions are made\n"
-        'And the user waits for the "Store AIP location" decision point to'
-        ' appear and chooses "Store AIP Encrypted in standard Archivematica'
-        ' Directory" during ingest\n'
         "And the user waits for the AIP to appear in archival storage".format(
             transfer_path
         )
@@ -354,14 +374,13 @@ def step_impl(context):
         # <premis:eventDetail>program=gpg (GPG); version=1.4.16; python-gnupg;
         # version=0.4.0</premis:eventDetail>
         premis_event_detail = premis_event.find(
-            "mets:xmlData/premis3:event/premis3:eventDetail",
+            "mets:xmlData/premis3:event/premis3:eventDetailInformation/premis3:eventDetail",
             context.am_user.mets.mets_nsmap,
         ).text
         assert "GPG" in premis_event_detail
         assert "version=" in premis_event_detail
         premis_event_od_note = premis_event.find(
-            "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/"
-            "premis3:eventOutcomeDetail/premis3:eventOutcomeDetailNote",
+            "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/premis3:eventOutcomeDetail/premis3:eventOutcomeDetailNote",
             context.am_user.mets.mets_nsmap,
         ).text.strip()
         assert 'Status="encryption ok"' in premis_event_od_note
@@ -526,10 +545,7 @@ def step_impl(context, aips_store_path):
         return
     elif aip_local_path is False:
         logger.info(
-            "Unable to copy file %s from the server to the local file"
-            " system. Attempt to scp the file failed. Abandoning attempt"
-            " to assert that the AIP on disk is"
-            " encrypted.",
+            "Unable to copy file %s from the server to the local file system. Attempt to scp the file failed. Abandoning attempt to assert that the AIP on disk is encrypted.",
             aip_server_path,
         )
         return
@@ -547,18 +563,20 @@ def step_impl(context):
 
 @then("the user is prevented from deleting the key because {reason}")
 def step_impl(context, reason):
-    assert context.scenario.delete_gpg_key_success is False
+    assert (
+        context.scenario.delete_gpg_key_success is False
+    ), "GPG deletion success is something other than False: {}".format(
+        context.scenario.delete_gpg_key_success
+    )
     if reason == "it is attached to a space":
         assert context.scenario.delete_gpg_key_msg.startswith("GPG key")
         assert context.scenario.delete_gpg_key_msg.endswith(
-            "cannot be deleted because at least one GPG Space is using it for"
-            " encryption."
+            "cannot be deleted because at least one GPG Space is using it for encryption."
         )
     elif reason == "it is attached to a package":
         assert context.scenario.delete_gpg_key_msg.startswith("GPG key")
         assert context.scenario.delete_gpg_key_msg.endswith(
-            "cannot be deleted because at least one package (AIP, transfer)"
-            " needs it in order to be decrypted."
+            "cannot be deleted because at least one package (AIP, transfer) needs it in order to be decrypted."
         ), "Reason is actually {}".format(context.scenario.delete_gpg_key_msg)
 
 
@@ -605,7 +623,7 @@ def assert_pointer_premis_event(**kwargs):
         if kwargs.get("in_evt_dtl"):
             in_evt_dtl = kwargs["in_evt_dtl"] or []
             premis_event_detail = premis_event.find(
-                "mets:xmlData/premis3:event/premis3:eventDetail",
+                "mets:xmlData/premis3:event/premis3:eventDetailInformation/premis3:eventDetail",
                 kwargs["context"].am_user.mets.mets_nsmap,
             ).text.strip()
             for substr in in_evt_dtl:
@@ -613,8 +631,7 @@ def assert_pointer_premis_event(**kwargs):
         if kwargs.get("in_evt_out"):
             in_evt_out = kwargs["in_evt_out"] or []
             premis_event_out = premis_event.find(
-                "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/"
-                "premis3:eventOutcome",
+                "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/premis3:eventOutcome",
                 kwargs["context"].am_user.mets.mets_nsmap,
             ).text.strip()
             for substr in in_evt_out:
@@ -622,8 +639,7 @@ def assert_pointer_premis_event(**kwargs):
         if kwargs.get("in_evt_out_dtl_nt"):
             in_evt_out_dtl_nt = kwargs["in_evt_out_dtl_nt"] or []
             premis_event_od_note = premis_event.find(
-                "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/"
-                "premis3:eventOutcomeDetail/premis3:eventOutcomeDetailNote",
+                "mets:xmlData/premis3:event/premis3:eventOutcomeInformation/premis3:eventOutcomeDetail/premis3:eventOutcomeDetailNote",
                 kwargs["context"].am_user.mets.mets_nsmap,
             ).text.strip()
             for substr in in_evt_out_dtl_nt:
@@ -711,20 +727,18 @@ def assert_pointer_transform_file_encryption(pointer_path, ns, fingerprint=None)
             )
         # premis3:compositionLevel incremented
         compos_lvl_el = doc.find(
-            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis3:object/"
-            "premis3:objectCharacteristics/premis3:compositionLevel",
+            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis:object/premis:objectCharacteristics/premis:compositionLevel",
             ns,
         )
         assert compos_lvl_el is not None
         assert compos_lvl_el.text.strip() == "2"
         # premis3:inhibitors added
         inhibitors_el = doc.find(
-            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis3:object/"
-            "premis3:objectCharacteristics/premis3:inhibitors",
+            "mets:amdSec/mets:techMD/mets:mdWrap/mets:xmlData/premis:object/premis:objectCharacteristics/premis:inhibitors",
             ns,
         )
         assert inhibitors_el is not None
-        assert inhibitors_el.find("premis3:inhibitorType", ns).text.strip() == ("GPG")
-        assert inhibitors_el.find("premis3:inhibitorTarget", ns).text.strip() == (
+        assert inhibitors_el.find("premis:inhibitorType", ns).text.strip() == ("GPG")
+        assert inhibitors_el.find("premis:inhibitorTarget", ns).text.strip() == (
             "All content"
         )

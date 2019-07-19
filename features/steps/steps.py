@@ -326,8 +326,17 @@ def step_impl(context):
     context.am_user.browser.add_dummy_metadata(utils.get_uuid_val(context, "sip"))
 
 
+@given("the user initiates a {reingest_type} re-ingest on the AIP")
+def step_impl(context, reingest_type):
+    _perform_reingest(context, reingest_type)
+
+
 @when("the user initiates a {reingest_type} re-ingest on the AIP")
 def step_impl(context, reingest_type):
+    _perform_reingest(context, reingest_type)
+
+
+def _perform_reingest(context, reingest_type):
     uuid_val = utils.get_uuid_val(context, "sip")
     context.am_user.browser.initiate_reingest(uuid_val, reingest_type=reingest_type)
 

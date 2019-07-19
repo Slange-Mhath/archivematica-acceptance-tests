@@ -64,7 +64,7 @@ Feature: AIP Encryption
     And the default processing config is in its default state
     When a transfer is initiated on directory ~/archivematica-sampledata/SampleTransfers/BagTransfer
     And the user waits for the "Assign UUIDs to directories?" decision point to appear and chooses "No" during transfer
-    And the user waits for the "Select file format identification command" decision point to appear and chooses "Identify using Fido" during transfer
+    And the user waits for the "Do you want to perform file format identification?" decision point to appear and chooses "Yes" during transfer
     And the user waits for the "Perform policy checks on originals?" decision point to appear and chooses "No" during transfer
     And the user waits for the "Create SIP(s)" decision point to appear and chooses "Send to backlog" during transfer
     And the user waits for the DIP to appear in transfer backlog
@@ -89,7 +89,8 @@ Feature: AIP Encryption
   Scenario: Richard wants to ensure that GPG deletion is never permitted if the key is associated to a space or if it is needed to decrypt an existing package. However, if all space associations are destroyed and all dependent packages deleted, then deletion of the (orphaned) key should be permitted.
     Given there is a standard GPG-encrypted space in the storage service
     And there is a standard GPG-encrypted AIP Storage location in the storage service
-    And the default processing config is in its default state
+    And automated processing with all decision points resolved
+    And automated processing configured to Store AIP Encrypted in standard Archivematica Directory
     When the user creates a new GPG key and assigns it to the standard GPG-encrypted space
     And an encrypted AIP is created from the directory at ~/archivematica-sampledata/SampleTransfers/BagTransfer
     And the user attempts to delete the new GPG key
@@ -101,11 +102,17 @@ Feature: AIP Encryption
     And the user attempts to delete the new GPG key
     Then the user succeeds in deleting the GPG key
 
-  @reencrypt-different-key
-  Scenario: Richard wants to confirm that he can re-encrypt an encrypted AIP with a new key. He has encrypted an AIP with GPG key A in space S. He later changed space S to use the more secure GPG key B. He wants to decrypt the AIPs encrypted with A and re-encrypt them with key B. Finally, he wants to delete the now unused key A from the storage service.
-    Given an encrypted AIP in the standard GPG-encrypted space
-    And the reminder to add metadata is enabled
-    When the user creates a new GPG key and assigns it to the standard GPG-encrypted space
-    And the user performs a metadata-only re-ingest on the AIP
-    And the user downloads the AIP pointer file
-    Then the AIP pointer file references the fingerprint of the new GPG key
+# Scenario below broken by:
+#
+#   * https://github.com/archivematica/Issues/issues/803
+#
+
+#  @reencrypt-different-key
+#  Scenario: Richard wants to confirm that he can re-encrypt an encrypted AIP with a new key. He has encrypted an AIP with GPG key A in space S. He later changed space S to use the more secure GPG key B. He wants to decrypt the AIPs encrypted with A and re-encrypt them with key B. Finally, he wants to delete the now unused key A from the storage service.
+#    Given there is a standard GPG-encrypted space in the storage service
+#    And an encrypted AIP in the standard GPG-encrypted space
+#    When the user creates a new GPG key and assigns it to the standard GPG-encrypted space
+#    And the user initiates a metadata-only re-ingest on the AIP
+#    And the user waits for the "Approve AIP reingest" decision point to appear and chooses "Approve AIP reingest" during ingest
+#    And the user downloads the AIP pointer file
+#    Then the AIP pointer file references the fingerprint of the new GPG key
