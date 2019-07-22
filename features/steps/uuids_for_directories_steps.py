@@ -22,8 +22,7 @@ logger = logging.getLogger("amauat.steps.uuidsdirectories")
 
 
 @given(
-    "remote directory {dir_path} contains a hierarchy of subfolders"
-    " containing digital objects"
+    "remote directory {dir_path} contains a hierarchy of subfolders containing digital objects"
 )
 def step_impl(context, dir_path):
     """Get a local copy of ``dir_path`` and assert that it contains at least
@@ -111,30 +110,18 @@ def step_impl(context):
     directories.
     """
     context.execute_steps(
-        "Given that the user has ensured that the default processing config is"
-        " in its default state\n"
-        'And the processing config decision "Assign UUIDs to directories" is'
-        ' set to "Yes"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Transfer)" is set to "Yes"\n'
-        'And the processing config decision "Create SIP(s)" is set to "Create'
-        ' single SIP and continue processing"\n'
-        'And the processing config decision "Normalize" is set to "Normalize'
-        ' for preservation"\n'
-        'And the processing config decision "Approve normalization" is set to'
-        ' "Yes"\n'
+        "Given that the user has ensured that the default processing config is in its default state\n"
+        'And the processing config decision "Assign UUIDs to directories" is set to "Yes"\n'
+        'And the processing config decision "Select file format identification command (Transfer)" is set to "Yes"\n'
+        'And the processing config decision "Create SIP(s)" is set to "Create single SIP and continue processing"\n'
+        'And the processing config decision "Normalize" is set to "Normalize for preservation"\n'
+        'And the processing config decision "Approve normalization" is set to "Yes"\n'
         'And the processing config decision "Bind PIDs" is set to "No"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Submission documentation & metadata)" is set to'
-        ' "Yes"\n'
-        'And the processing config decision "Perform policy checks on'
-        ' preservation derivatives" is set to "No"\n'
-        'And the processing config decision "Perform policy checks on access'
-        ' derivatives" is set to "No"\n'
-        'And the processing config decision "Perform policy checks on'
-        ' originals" is set to "No"\n'
-        'And the processing config decision "Document empty directories"'
-        ' is set to "Yes"\n'
+        'And the processing config decision "Select file format identification command (Submission documentation & metadata)" is set to "Yes"\n'
+        'And the processing config decision "Perform policy checks on preservation derivatives" is set to "No"\n'
+        'And the processing config decision "Perform policy checks on access derivatives" is set to "No"\n'
+        'And the processing config decision "Perform policy checks on originals" is set to "No"\n'
+        'And the processing config decision "Document empty directories" is set to "Yes"\n'
         'And the processing config decision "Store AIP" is set to "Yes"\n'
         'And the processing config decision "Store AIP location" is set to "Default location"\n'
     )
@@ -143,18 +130,15 @@ def step_impl(context):
 @given("default processing configured to assign UUIDs to directories")
 def step_impl(context):
     context.execute_steps(
-        'Given the processing config decision "Assign UUIDs to directories" is'
-        ' set to "Yes"\n'
+        'Given the processing config decision "Assign UUIDs to directories" is set to "Yes"\n'
     )
 
 
 @given("default processing configured to assign UUIDs to all directories")
 def step_impl(context):
     context.execute_steps(
-        'Given the processing config decision "Assign UUIDs to directories" is'
-        ' set to "Yes"\n'
-        'And the processing config decision "Document empty directories" is'
-        ' set to "Yes"\n'
+        'Given the processing config decision "Assign UUIDs to directories" is set to "Yes"\n'
+        'And the processing config decision "Document empty directories" is set to "Yes"\n'
     )
 
 

@@ -23,16 +23,14 @@ def step_impl(context, microservice_name, unit_type):
 
 
 @given(
-    'the user waits for the "{microservice_name}" decision point to appear'
-    " during {unit_type}"
+    'the user waits for the "{microservice_name}" decision point to appear during {unit_type}'
 )
 def step_impl(context, microservice_name, unit_type):
     utils.wait_for_decision_point_to_appear(context, microservice_name, unit_type)
 
 
 @given(
-    'the user chooses "{choice}" at decision point "{decision_point}" during'
-    " {unit_type}"
+    'the user chooses "{choice}" at decision point "{decision_point}" during {unit_type}'
 )
 def step_impl(context, choice, decision_point, unit_type):
     utils.make_choice(context, choice, decision_point, unit_type)
@@ -46,8 +44,7 @@ def step_impl(context):
 
 
 @given(
-    "that the user has ensured that the default processing config is in its"
-    " default state"
+    "that the user has ensured that the default processing config is in its default state"
 )
 def step_impl(context):
     context.am_user.browser.ensure_default_processing_config_in_default_state()
@@ -79,8 +76,7 @@ def step_impl(context, transfer_path):
 
 
 @given(
-    "the user has ensured that there is a storage service space with"
-    " attributes {attributes}"
+    "the user has ensured that there is a storage service space with attributes {attributes}"
 )
 def step_impl(context, attributes):
     """Ensure that there is a storage space with the attributes in
@@ -124,8 +120,7 @@ def step_impl(context):
 
 
 @given(
-    "the default processing config is set to automate a transfer through to"
-    ' "Store AIP"'
+    'the default processing config is set to automate a transfer through to "Store AIP"'
 )
 def step_impl(context):
     context.execute_steps(
@@ -165,8 +160,7 @@ def step_impl(context):
 
 
 @given(
-    'a default processing config that gets a transfer to the "Create SIP(s)"'
-    " decision point"
+    'a default processing config that gets a transfer to the "Create SIP(s)" decision point'
 )
 def step_impl(context):
     context.execute_steps(
@@ -182,24 +176,21 @@ def step_impl(context):
 
 
 @when(
-    'the user waits for the "{microservice_name}" micro-service to complete'
-    " during {unit_type}"
+    'the user waits for the "{microservice_name}" micro-service to complete during {unit_type}'
 )
 def step_impl(context, microservice_name, unit_type):
     utils.wait_for_micro_service_to_complete(context, microservice_name, unit_type)
 
 
 @when(
-    'the user waits for the "{microservice_name}" decision point to appear'
-    " during {unit_type}"
+    'the user waits for the "{microservice_name}" decision point to appear during {unit_type}'
 )
 def step_impl(context, microservice_name, unit_type):
     utils.wait_for_decision_point_to_appear(context, microservice_name, unit_type)
 
 
 @when(
-    'the user waits for the "{microservice_name}" decision point to appear'
-    ' and chooses "{choice}" during {unit_type}'
+    'the user waits for the "{microservice_name}" decision point to appear and chooses "{choice}" during {unit_type}'
 )
 def step_impl(context, microservice_name, choice, unit_type):
     utils.wait_for_decision_point_to_appear(context, microservice_name, unit_type)
@@ -207,8 +198,7 @@ def step_impl(context, microservice_name, choice, unit_type):
 
 
 @when(
-    'the user chooses "{choice}" at decision point "{decision_point}" during'
-    " {unit_type}"
+    'the user chooses "{choice}" at decision point "{decision_point}" during {unit_type}'
 )
 def step_impl(context, choice, decision_point, unit_type):
     utils.make_choice(context, choice, decision_point, unit_type)
@@ -368,8 +358,7 @@ def step_impl(context):
 
 
 @when(
-    "a transfer is initiated on directory {transfer_path} with accession"
-    " number {accession_no}"
+    "a transfer is initiated on directory {transfer_path} with accession number {accession_no}"
 )
 def step_impl(context, transfer_path, accession_no):
     context.scenario.accession_no = accession_no
@@ -427,8 +416,7 @@ def step_impl(context):
 
 
 @then(
-    'the "{microservice_name}" micro-service output is'
-    ' "{microservice_output}" during {unit_type}'
+    'the "{microservice_name}" micro-service output is "{microservice_output}" during {unit_type}'
 )
 def step_impl(context, microservice_name, microservice_output, unit_type):
     unit_type = utils.get_normalized_unit_type(unit_type)
