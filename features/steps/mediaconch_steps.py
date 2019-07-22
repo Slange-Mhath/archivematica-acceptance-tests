@@ -42,8 +42,7 @@ def step_impl(context, transfer_path, file_validity):
 
 
 @given(
-    "directory {transfer_path} contains a processing config that does"
-    " normalization for preservation, etc."
+    "directory {transfer_path} contains a processing config that does normalization for preservation, etc."
 )
 def step_impl(context, transfer_path):
     """Details: transfer must contain a processing config that creates a SIP,
@@ -53,8 +52,7 @@ def step_impl(context, transfer_path):
 
 
 @given(
-    "directory {transfer_path} contains a processing config that does"
-    " normalization for access, etc."
+    "directory {transfer_path} contains a processing config that does normalization for access, etc."
 )
 def step_impl(context, transfer_path):
     """Details: transfer must contain a processing config that creates a SIP,
@@ -69,34 +67,21 @@ def step_impl(context):
     check-targetted workflows.
     """
     context.execute_steps(
-        "Given that the user has ensured that the default processing config is"
-        " in its default state\n"
-        'And the processing config decision "Assign UUIDs to directories" is'
-        ' set to "No"\n'
-        'And the processing config decision "Perform policy checks on'
-        ' preservation derivatives" is set to "No"\n'
-        'And the processing config decision "Perform policy checks on access'
-        ' derivatives" is set to "No"\n'
-        'And the processing config decision "Perform policy checks on'
-        ' originals" is set to "No"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Transfer)" is set to "Yes"\n'
-        'And the processing config decision "Create SIP(s)" is set to "Create'
-        ' single SIP and continue processing"\n'
-        'And the processing config decision "Approve normalization" is set to'
-        ' "Yes"\n'
-        'And the processing config decision "Select file format identification'
-        ' command (Submission documentation & metadata)" is set to'
-        ' "Yes"\n'
+        "Given that the user has ensured that the default processing config is in its default state\n"
+        'And the processing config decision "Assign UUIDs to directories" is set to "No"\n'
+        'And the processing config decision "Perform policy checks on preservation derivatives" is set to "No"\n'
+        'And the processing config decision "Perform policy checks on access derivatives" is set to "No"\n'
+        'And the processing config decision "Perform policy checks on originals" is set to "No"\n'
+        'And the processing config decision "Select file format identification command (Transfer)" is set to "Yes"\n'
+        'And the processing config decision "Create SIP(s)" is set to "Create single SIP and continue processing"\n'
+        'And the processing config decision "Approve normalization" is set to "Yes"\n'
+        'And the processing config decision "Select file format identification command (Submission documentation & metadata)" is set to "Yes"\n'
         'And the processing config decision "Bind PIDs" is set to "No"\n'
-        'And the processing config decision "Store AIP location" is set to'
-        ' "Store AIP in standard Archivematica Directory"\n'
-        'And the processing config decision "Document empty directories" is set'
-        ' to "No"\n'
-        'And the processing config decision "Generate thumbnails" is set to'
-        ' "No"\n'
-        'And the processing config decision "Upload DIP" is set to'
-        ' "Do not upload DIP"'
+        'And the processing config decision "Store AIP" is set to "Yes"\n'
+        'And the processing config decision "Store AIP location" is set to "Store AIP in standard Archivematica Directory"\n'
+        'And the processing config decision "Document empty directories" is set to "No"\n'
+        'And the processing config decision "Generate thumbnails" is set to "No"\n'
+        'And the processing config decision "Upload DIP" is set to "Do not upload DIP"\n'
     )
 
 
@@ -163,11 +148,8 @@ def step_impl(context):
 def step_impl(context):
     context.execute_steps(
         "Given a base processing configuration for MediaConch tests\n"
-        'And the processing config decision "Perform policy checks on'
-        ' access derivatives" is set to "Yes"\n'
-        'And the processing config decision "Normalize" is set to "Normalize'
-        ' for access"\n'
-        'And the processing config decision "Store AIP" is set to "Yes"'
+        'And the processing config decision "Perform policy checks on access derivatives" is set to "Yes"\n'
+        'And the processing config decision "Normalize" is set to "Normalize for access"\n'
     )
 
 
@@ -187,6 +169,8 @@ def step_impl(context):
 def step_impl(context):
     context.execute_steps(
         "Given a base processing configuration for MediaConch tests\n"
+        'And the processing config decision "Normalize" is set to "Do not'
+        ' normalize"\n'
         'And the processing config decision "Normalize" is set to "Do not'
         ' normalize"\n'
     )
@@ -485,7 +469,7 @@ def step_impl(context, validation_result):
 def step_impl(context, event_outcome):
     events = []
     for e in context.am_user.mets.get_premis_events(
-        context.am_user.browser.get_mets(
+        context.am_user.browser.get_mets_via_api(
             context.scenario.transfer_name,
             context.am_user.browser.get_sip_uuid(context.scenario.transfer_name),
         )
