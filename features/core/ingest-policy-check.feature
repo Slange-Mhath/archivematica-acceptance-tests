@@ -104,4 +104,3 @@ Feature: Ingest policy check
     | not conform      | Failed                 | fail           | failed              | preforma/manually-normalized-access-none-conform-policy  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
     #| conform          | Completed successfully | pass           | successful          | preforma/manually-normalized-access-all-conform-policy   | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
     #| not conform      | Failed                 | fail           | failed              | preforma/manually-normalized-access-none-conform-policy  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
-

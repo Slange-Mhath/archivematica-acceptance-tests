@@ -404,7 +404,7 @@ class ArchivematicaBrowserStorageServiceAbility(
         self.driver.find_element_by_id("id_name_email").send_keys(new_key_email)
         self.driver.find_element_by_css_selector("input[type=submit]").click()
         # Nihilistic wait is the only value working on Docker at present... and
-        # may still need to be longer. Wait needed to generate GPG entropy.
+        # may still need to be longer. Wait needed to accumulate GPG entropy.
         self.wait_for_presence("div.alert-success", self.nihilistic_wait)
         # alert alert-success
         alert_text = self.driver.find_element_by_css_selector("div.alert-success").text
@@ -428,5 +428,5 @@ class ArchivematicaBrowserStorageServiceAbility(
                     break
         self.driver.find_element_by_css_selector("input[type=submit]").click()
         # Nihilistic wait is the only value working on Docker at present... and
-        # may still need to be longer. Wait needed to generate GPG entropy.
+        # may still need to be longer. Wait needed to accumulate GPG entropy.
         self.wait_for_presence("div.alert-success", self.nihilistic_wait)
