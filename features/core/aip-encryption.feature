@@ -29,10 +29,9 @@ Feature: AIP Encryption
   Scenario: Richard wants to create a space on his Archivematica Storage Service that encrypts all AIPs stored in that space. He also wants to confirm that the AIPs stored in that space are encrypted both by trying to open them without the key and by reading the AIP's pointer file. Finally, he wants to be able to download the AIPS via the Archivematica interface and have them be decrypted prior to download.
     Given there is a standard GPG-encrypted space in the storage service
     And there is a standard GPG-encrypted AIP Storage location in the storage service
-    And the default processing config is in its default state
+    And automated processing with all decision points resolved
+    And automated processing configured to Store AIP Encrypted in standard Archivematica Directory
     When a transfer is initiated on directory ~/archivematica-sampledata/SampleTransfers/BagTransfer
-    And standard AIP-creation decisions are made
-    And the user waits for the "Store AIP location" decision point to appear and chooses "Store AIP Encrypted in standard Archivematica Directory" during ingest
     And the user waits for the AIP to appear in archival storage
     And the user downloads the AIP pointer file
     Then the pointer file contains a PREMIS:EVENT element for the encryption event
@@ -45,11 +44,10 @@ Feature: AIP Encryption
   Scenario: Richard wants to ensure that he can encrypt uncompressed AIPs.
     Given there is a standard GPG-encrypted space in the storage service
     And there is a standard GPG-encrypted AIP Storage location in the storage service
-    And the default processing config is in its default state
+    And automated processing with all decision points resolved
     And the processing config decision "Select compression algorithm" is set to "Uncompressed"
+    And automated processing configured to Store AIP Encrypted in standard Archivematica Directory
     When a transfer is initiated on directory ~/archivematica-sampledata/SampleTransfers/BagTransfer
-    And standard AIP-creation decisions are made
-    And the user waits for the "Store AIP location" decision point to appear and chooses "Store AIP Encrypted in standard Archivematica Directory" during ingest
     And the user waits for the AIP to appear in archival storage
     And the user queries the API until the AIP has been stored
     Then the uncompressed AIP on disk at /var/archivematica/sharedDirectory/www/AIPsStoreEncrypted/ is encrypted
@@ -61,13 +59,10 @@ Feature: AIP Encryption
     Given there is a standard GPG-encrypted space in the storage service
     And the user has disabled the default transfer backlog location
     And there is a standard GPG-encrypted Transfer Backlog location in the storage service
-    And the default processing config is in its default state
+    And automated processing with all decision points resolved
+    And the processing config decision "Create SIP(s)" is set to "Send to backlog"
     When a transfer is initiated on directory ~/archivematica-sampledata/SampleTransfers/BagTransfer
-    And the user waits for the "Assign UUIDs to directories?" decision point to appear and chooses "No" during transfer
-    And the user waits for the "Do you want to perform file format identification?" decision point to appear and chooses "Yes" during transfer
-    And the user waits for the "Perform policy checks on originals?" decision point to appear and chooses "No" during transfer
-    And the user waits for the "Create SIP(s)" decision point to appear and chooses "Send to backlog" during transfer
-    And the user waits for the DIP to appear in transfer backlog
+    And the user waits for the SIP to appear in transfer backlog
     Then the transfer on disk is encrypted
     # TODO: implement the following steps. Spending time implementing these did
     # not seem justifiable at the present moment.

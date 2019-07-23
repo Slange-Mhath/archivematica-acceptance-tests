@@ -305,7 +305,7 @@ def step_impl(context, aip_description):
     )
 
 
-@when("the user waits for the DIP to appear in transfer backlog")
+@when("the user waits for the SIP to appear in transfer backlog")
 def step_impl(context):
     uuid_val = utils.get_uuid_val(context, "transfer")
     context.am_user.browser.wait_for_dip_in_transfer_backlog(uuid_val)
