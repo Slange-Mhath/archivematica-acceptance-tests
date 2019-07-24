@@ -5,8 +5,6 @@ import os
 
 from behave import when
 
-from features.steps import utils
-
 
 logger = logging.getLogger("amauat.steps.infiniteaips")
 
