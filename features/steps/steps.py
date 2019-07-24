@@ -243,11 +243,22 @@ def step_impl(context, choice, decision_point, unit_type):
     utils.make_choice(context, choice, decision_point, unit_type)
 
 
-@when("the user waits for the AIP to appear in archival storage")
-def step_impl(context):
+def _appear_in_storage(context):
+    """Helper to wrap the functionality to test for an AIP in archival storage.
+    """
     uuid_val = utils.get_uuid_val(context, "sip")
     context.am_user.browser.wait_for_aip_in_archival_storage(uuid_val)
     time.sleep(context.am_user.pessimistic_wait)
+
+
+@when("the user waits for the AIP to appear in archival storage")
+def step_impl(context):
+    _appear_in_storage(context)
+
+
+@then("the user waits for the AIP to appear in archival storage")
+def step_impl(context):
+    _appear_in_storage(context)
 
 
 @when("the user searches for the AIP UUID in the Storage Service")

@@ -84,18 +84,17 @@ def step_impl(context):
     )
 
 
-@given("a processing configuration for policy checks on preservation" " derivatives")
+@given("a processing configuration for policy checks on preservation derivatives")
 def step_impl(context):
     context.execute_steps(
         "Given a base processing configuration for MediaConch tests\n"
         'And the processing config decision "Perform policy checks on preservation derivatives" is set to "Yes"\n'
-        'And the processing config decision "Normalize" is set to "Normalize for preservation"'
+        'And the processing config decision "Normalize" is set to "Normalize for preservation"\n'
+        'And the processing config decision "Store AIP" is set to "Yes"'
     )
 
 
-@given(
-    "a processing configuration for conformance checks on preservation" " derivatives"
-)
+@given("a processing configuration for conformance checks on preservation derivatives")
 def step_impl(context):
     context.execute_steps(
         "Given a base processing configuration for MediaConch tests\n"

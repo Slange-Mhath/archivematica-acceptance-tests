@@ -25,11 +25,11 @@ Feature: Ingest policy check
 
     Examples: Policy Check Outcomes
     | do_files_conform | microservice_output    | event_outcome  | verification_result | transfer_path                          | policy_file                       | purpose                     |
-    | conform          | Completed successfully | pass           | successful          | preforma/all-conform-policy-norm-acc   | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
-    | not conform      | Failed                 | fail           | failed              | preforma/none-conform-policy-norm-acc  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    | conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/all-conform-policy-norm-acc   | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    | not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/none-conform-policy-norm-acc  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
     # Uncomment the following two rows to test on the equivalent MediaConch .xsl policy files
-    #| conform          | Completed successfully | pass           | successful          | preforma/all-conform-policy-norm-acc   | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
-    #| not conform      | Failed                 | fail           | failed              | preforma/none-conform-policy-norm-acc  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    #| conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/all-conform-policy-norm-acc   | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    #| not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/none-conform-policy-norm-acc  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
 
   @preservation @nonmanual
   Scenario Outline: Isla has preservation derivatives and she needs to know whether they conform to her preservation policy
@@ -41,7 +41,6 @@ Feature: Ingest policy check
     And a transfer is initiated on directory <transfer_path>
     And the user waits for the "Policy checks for preservation derivatives" micro-service to complete during ingest
     Then the "Policy checks for preservation derivatives" micro-service output is "<microservice_output>" during ingest
-    When the user chooses "Store AIP" at decision point "Store AIP (review)" during ingest
     And the user waits for the AIP to appear in archival storage
     Then all PREMIS policy-check-type validation events have eventOutcome = <event_outcome>
     And the user downloads the AIP
@@ -51,11 +50,11 @@ Feature: Ingest policy check
 
     Examples: Policy Check Outcomes
     | do_files_conform | microservice_output    | event_outcome  | verification_result | transfer_path                | policy_file                       | purpose                     |
-    | conform          | Completed successfully | pass           | successful          | preforma/all-conform-policy  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
-    | not conform      | Failed                 | fail           | failed              | preforma/none-conform-policy | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    | conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/all-conform-policy  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    | not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/none-conform-policy | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
     # Uncomment the following two rows to test on the equivalent MediaConch .xsl policy files
-    #| conform          | Completed successfully | pass           | successful          | preforma/all-conform-policy  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
-    #| not conform      | Failed                 | fail           | failed              | preforma/none-conform-policy | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    #| conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/all-conform-policy  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    #| not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/none-conform-policy | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
 
   @preservation @manual
   Scenario Outline: Isla has manually normalized preservation derivatives and she needs to know whether they conform to her preservation policy
@@ -67,7 +66,6 @@ Feature: Ingest policy check
     And a transfer is initiated on directory <transfer_path>
     And the user waits for the "Policy checks for preservation derivatives" micro-service to complete during ingest
     Then the "Policy checks for preservation derivatives" micro-service output is "<microservice_output>" during ingest
-    When the user chooses "Store AIP" at decision point "Store AIP (review)" during ingest
     And the user waits for the AIP to appear in archival storage
     Then all PREMIS policy-check-type validation events have eventOutcome = <event_outcome>
     And the user downloads the AIP
@@ -77,10 +75,10 @@ Feature: Ingest policy check
 
     Examples: Policy Check Outcomes
     | do_files_conform | microservice_output    | event_outcome  | verification_result | transfer_path                                                  | policy_file                       | purpose                     |
-    | conform          | Completed successfully | pass           | successful          | preforma/manually-normalized-preservation-all-conform-policy   | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
-    | not conform      | Failed                 | fail           | failed              | preforma/manually-normalized-preservation-none-conform-policy  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
-    #| conform          | Completed successfully | pass           | successful          | preforma/manually-normalized-preservation-all-conform-policy   | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
-    #| not conform      | Failed                 | fail           | failed              | preforma/manually-normalized-preservation-none-conform-policy  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    | conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/manually-normalized-preservation-all-conform-policy   | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    | not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/manually-normalized-preservation-none-conform-policy  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    #| conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/manually-normalized-preservation-all-conform-policy   | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    #| not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/manually-normalized-preservation-none-conform-policy  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
 
   @access @manual
   Scenario Outline: Isla has manually normalized access derivatives and she needs to know whether they conform to her access policy
@@ -100,7 +98,7 @@ Feature: Ingest policy check
 
     Examples: Policy Check Outcomes
     | do_files_conform | microservice_output    | event_outcome  | verification_result | transfer_path                                            | policy_file                       | purpose                     |
-    | conform          | Completed successfully | pass           | successful          | preforma/manually-normalized-access-all-conform-policy   | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
-    | not conform      | Failed                 | fail           | failed              | preforma/manually-normalized-access-none-conform-policy  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
-    #| conform          | Completed successfully | pass           | successful          | preforma/manually-normalized-access-all-conform-policy   | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
-    #| not conform      | Failed                 | fail           | failed              | preforma/manually-normalized-access-none-conform-policy  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    | conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/manually-normalized-access-all-conform-policy   | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    | not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/manually-normalized-access-none-conform-policy  | NYULib_MKVFFV1_MODIFIED.xml       | Validation against a policy |
+    #| conform          | Completed successfully | pass           | successful          | TestTransfers/acceptance-tests/preforma/manually-normalized-access-all-conform-policy   | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
+    #| not conform      | Failed                 | fail           | failed              | TestTransfers/acceptance-tests/preforma/manually-normalized-access-none-conform-policy  | NYULibraries_MKVFFV1-MODIFIED.xsl | Validation against a policy |
