@@ -167,18 +167,6 @@ def step_impl(context):
     )
 
 
-@given("automated processing with all decision points resolved")
-def step_impl(context):
-    """Utilizes the Bind PIDs automated processing, but plugs the gaps where
-    decisions haven't been resolved.
-    """
-    context.execute_steps(
-        "Given a fully automated default processing config\n"
-        'And the processing config decision "Assign UUIDs to directories" is set to "No"\n'
-        'And the processing config decision "Bind PIDs" is set to "No"\n'
-    )
-
-
 @given(
     "automated processing configured to Store AIP Encrypted in standard Archivematica Directory"
 )

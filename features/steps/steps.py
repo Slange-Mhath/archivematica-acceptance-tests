@@ -59,14 +59,52 @@ def step_impl(context):
     context.am_user.browser.save_default_processing_config()
 
 
-@given(
-    'the processing config decision "{decision_label}" is set to' ' "{choice_value}"'
-)
-def step_impl(context, decision_label, choice_value):
+def _set_config(context, decision_label, choice_value):
+    """Helper to allow us to conveniently set processing configuration choices.
+    """
     context.am_user.browser.set_processing_config_decision(
         decision_label=decision_label, choice_value=choice_value
     )
     context.am_user.browser.save_default_processing_config()
+
+
+@given(
+    'the processing config decision "{decision_label}" is set to' ' "{choice_value}"'
+)
+def step_impl(context, decision_label, choice_value):
+    _set_config(context, decision_label, choice_value)
+
+
+@then('the processing config decision "{decision_label}" is set to' ' "{choice_value}"')
+def step_impl(context, decision_label, choice_value):
+    _set_config(context, decision_label, choice_value)
+
+
+def _resolve_all_steps(context):
+    """Helper function to allow us to resolve all decision points in a
+    configuration.
+    """
+    context.execute_steps(
+        "Given a fully automated default processing config\n"
+        'And the processing config decision "Assign UUIDs to directories" is set to "No"\n'
+        'And the processing config decision "Bind PIDs" is set to "No"\n'
+    )
+
+
+@then("automated processing with all decision points resolved")
+def step_impl(context):
+    """Utilizes the Bind PIDs automated processing, but plugs the gaps where
+    decisions haven't been resolved.
+    """
+    _resolve_all_steps(context)
+
+
+@given("automated processing with all decision points resolved")
+def step_impl(context):
+    """Utilizes the Bind PIDs automated processing, but plugs the gaps where
+    decisions haven't been resolved.
+    """
+    _resolve_all_steps(context)
 
 
 @given("a transfer is initiated on directory {transfer_path}")
