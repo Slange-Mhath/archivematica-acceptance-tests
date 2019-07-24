@@ -1,6 +1,7 @@
 """General-purpose Steps."""
 
 import logging
+import os
 import time
 
 from behave import when, then, given, use_step_matcher
@@ -367,7 +368,15 @@ def step_impl(context, transfer_path, accession_no):
 
 @when("a {transfer_type} transfer is initiated on directory {transfer_path}")
 def step_impl(context, transfer_type, transfer_path):
-    utils.initiate_transfer(context, transfer_path, transfer_type=transfer_type)
+    res = utils.start_sample_transfer(
+        context.api_clients_config,
+        transfer_path,
+        transfer_type=transfer_type,
+        processing_config="default",
+    )
+    context.scenario.transfer_name = res["transfer_name"]
+    if transfer_type == "zipped bag":
+        context.scenario.transfer_name = os.path.basename(transfer_path)
 
 
 @when("a transfer is initiated on directory {transfer_path}")
