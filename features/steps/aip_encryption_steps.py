@@ -125,7 +125,7 @@ def step_impl(context):
         'And the processing config decision "Assign UUIDs to directories" is set to "No"\n'
         'And the processing config decision "Bind PIDs" is set to "No"\n'
         "And automated processing configured to Store AIP Encrypted in standard Archivematica Directory\n"
-        "When an encrypted AIP is created from the directory at ~/archivematica-sampledata/SampleTransfers/BagTransfer"
+        "When an encrypted AIP is created from the directory at SampleTransfers/BagTransfer"
     )
 
 
