@@ -40,10 +40,8 @@ Feature: AIP Encryption via Mirror Locations
     Given there is a standard GPG-encrypted space in the storage service
     And there is a standard GPG-encrypted Replicator location in the storage service
     And the default AIP Storage location has the GPG-encrypted Replicator location as its replicator
-    And the default processing config is in its default state
-    When a transfer is initiated on directory ~/archivematica-sampledata/SampleTransfers/BagTransfer
-    And standard AIP-creation decisions are made
-    And the user waits for the "Store AIP location" decision point to appear and chooses "Store AIP in standard Archivematica Directory" during ingest
+    And automated processing with all decision points resolved
+    When a transfer is initiated on directory SampleTransfers/BagTransfer
     And the user waits for the AIP to appear in archival storage
     And the user searches for the AIP UUID in the Storage Service
     Then the master AIP and its replica are returned by the search
