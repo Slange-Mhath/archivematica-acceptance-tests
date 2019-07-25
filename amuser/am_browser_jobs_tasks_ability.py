@@ -1,6 +1,7 @@
 """Archivematica Browser Jobs & Tasks Ability"""
 
 import logging
+import sys
 import time
 
 from selenium.common.exceptions import NoSuchElementException
@@ -169,7 +170,12 @@ class ArchivematicaBrowserJobsTasksAbility(
 
     @selenium_ability.recurse_on_stale
     def get_job_uuid(
-        self, ms_name, group_name, transfer_uuid, job_outputs=c.JOB_OUTPUTS_COMPLETE
+        self,
+        ms_name,
+        group_name,
+        transfer_uuid,
+        job_outputs=c.JOB_OUTPUTS_COMPLETE,
+        level=0,
     ):
         """Get the UUID of the Job model representing the execution of
         micro-service ``ms_name`` in transfer ``transfer_uuid``.
@@ -187,8 +193,26 @@ class ArchivematicaBrowserJobsTasksAbility(
                     ).text.strip()
                     if job_output in job_outputs:
                         return (span_elem.get_attribute("title").strip(), job_output)
-                    time.sleep(self.quick_wait)
-                    return self.get_job_uuid(ms_name, group_name, transfer_uuid)
+                    if level < (sys.getrecursionlimit() / 2):
+                        # The job is taking a long time to complete. Half the
+                        # amount of checking to avoid stack-overflow.
+                        logger.warning(
+                            "Recursion limit close to being reached: level: {} <= {}".format(
+                                level, sys.getrecursionlimit()
+                            )
+                        )
+                        time.sleep(self.quick_wait)
+                    else:
+                        time.sleep(self.optimistic_wait)
+                    level += 1
+                    try:
+                        return self.get_job_uuid(
+                            ms_name, group_name, transfer_uuid, level=level
+                        )
+                    except RecursionError:
+                        logger.error(
+                            "Recursion depth exceeded attempting to get job UUID, consider re-running the test"
+                        )
         return None, None
 
 
