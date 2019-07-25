@@ -107,48 +107,8 @@ class ArchivematicaBrowserJobsTasksAbility(
 
     def parse_tasks_table(self, tasks_url, table_dict):
         old_driver = self.driver
-        table_dict = self._parse_tasks_table(tasks_url, table_dict, self.vn)
+        table_dict = self._parse_tasks_table_am_gte_1_7(tasks_url, table_dict)
         self.driver = old_driver
-        return table_dict
-
-    def _parse_tasks_table(self, tasks_url, table_dict, vn):
-        return {
-            "1.6": self._parse_tasks_table_am_1_6,
-            "1.7": self._parse_tasks_table_am_gte_1_7,
-            "1.8": self._parse_tasks_table_am_gte_1_7,
-        }.get(vn, self._parse_tasks_table_am_1_6)(tasks_url, table_dict)
-
-    def _parse_tasks_table_am_1_6(self, tasks_url, table_dict):
-        self.driver = self.get_driver()
-        if self.driver.current_url != tasks_url:
-            self.login()
-        self.driver.get(tasks_url)
-        self.wait_for_presence("table")
-        # Parse the <table> to a dict and return it.
-        table_elem = self.driver.find_element_by_tag_name("table")
-        row_dict = {}
-        for row_elem in table_elem.find_elements_by_tag_name("tr"):
-            row_type = get_tasks_row_type(row_elem)
-            if row_type == "header":
-                if row_dict:
-                    table_dict["tasks"][row_dict["task_uuid"]] = row_dict
-                row_dict = process_task_header_row(row_elem, {})
-            elif row_type == "command":
-                row_dict = process_task_command_row(row_elem, row_dict)
-            elif row_type == "stdout":
-                row_dict = process_task_stdout_row(row_elem, row_dict)
-            else:
-                row_dict = process_task_stderr_row(row_elem, row_dict)
-        table_dict["tasks"][row_dict["task_uuid"]] = row_dict
-        next_tasks_url = None
-        for link_button in self.driver.find_elements_by_css_selector("a.btn"):
-            if link_button.text.strip() == "Next Page":
-                next_tasks_url = "{}{}".format(
-                    self.am_url, link_button.get_attribute("href")
-                )
-        self.driver.quit()
-        if next_tasks_url:
-            table_dict = self._parse_tasks_table_am_1_6(next_tasks_url, table_dict)
         return table_dict
 
     def _parse_tasks_table_am_gte_1_7(self, tasks_url, table_dict):
