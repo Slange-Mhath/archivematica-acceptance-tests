@@ -246,21 +246,18 @@ def step_impl(context):
     the_aip = the_aips[0]
     replica = not_the_aips[0]
     replica_uuid = replica["uuid"]
-    assert (
-        the_aip["replicas"] == replica["uuid"]
-    ), "We expected {} and {} to be the same, but they are not the same.".format(
-        the_aip["replicas"], replica["uuid"]
-    )
-    assert replica["is_replica_of"] == the_aip["uuid"]
-    expected_replica_actions = set(["Download", "Request", "Deletion"])
-    replica_actions = set([x.strip() for x in replica["actions"].split()])
+    assert replica["replica_of"] == the_aip["uuid"]
+    expected_replica_actions = set(["Pointer File", "Download", "Request Deletion"])
+    replica_actions = set([x.strip() for x in replica["actions"].split("|")])
     assert (
         replica_actions == expected_replica_actions
     ), "We expected the replica actions to be {} but in fact they were {}".format(
         expected_replica_actions, replica_actions
     )
-    expected_aip_actions = set(["Download", "Request", "Deletion", "Re-ingest"])
-    aip_actions = set([x.strip() for x in the_aip["actions"].split()])
+    expected_aip_actions = set(
+        ["Pointer File", "Download", "Request Deletion", "Re-ingest"]
+    )
+    aip_actions = set([x.strip() for x in the_aip["actions"].split("|")])
     assert (
         aip_actions == expected_aip_actions
     ), "We expected the AIP actions to be {} but in fact they were {}".format(
@@ -288,21 +285,20 @@ def step_impl(context, aip_description, second_aip_description, event_type):
             './/mets:mdWrap[@MDTYPE="PREMIS:OBJECT"]', context.am_user.mets.mets_nsmap
         )
         premis_relationship = premis_object_el.find(
-            "mets:xmlData/premis3:object/premis3:relationship",
+            "mets:xmlData/premis:object/premis:relationship",
             context.am_user.mets.mets_nsmap,
         )
         premis_relationship_type = premis_relationship.find(
-            "premis3:relationshipType", context.am_user.mets.mets_nsmap
+            "premis:relationshipType", context.am_user.mets.mets_nsmap
         ).text.strip()
         assert premis_relationship_type == "derivation"
         premis_related_object_uuid = premis_relationship.find(
-            "premis3:relatedObjectIdentification/"
-            "premis3:relatedObjectIdentifierValue",
+            "premis:relatedObjectIdentifier/premis:relatedObjectIdentifierValue",
             context.am_user.mets.mets_nsmap,
         ).text.strip()
         assert second_aip_uuid == premis_related_object_uuid
         premis_related_event_uuid = premis_relationship.find(
-            "premis3:relatedEventIdentification/" "premis3:relatedEventIdentifierValue",
+            "premis:relatedEventIdentifier/premis:relatedEventIdentifierValue",
             context.am_user.mets.mets_nsmap,
         ).text.strip()
         assert event_uuid == premis_related_event_uuid

@@ -51,7 +51,7 @@ Feature: AIP Encryption via Mirror Locations
     And the replica AIP pointer file contains a(n) creation PREMIS:EVENT
     And the replica AIP pointer file contains a(n) validation PREMIS:EVENT
     And the master AIP pointer file contains a PREMIS:OBJECT with a derivation relationship pointing to the replica AIP and the replication PREMIS:EVENT
-    And the replica AIP pointer file contains a PREMIS:OBJECT with a derivation relationship pointing to the master AIP and the replication PREMIS:EVENT
+#    And the replica AIP pointer file contains a PREMIS:OBJECT with a derivation relationship pointing to the master AIP and the replication PREMIS:EVENT
     And the replica AIP pointer file contains a mets:transformFile element for the encryption event
     And the replica AIP pointer file contains a(n) encryption PREMIS:EVENT
     And the master AIP on disk is not encrypted
