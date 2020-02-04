@@ -193,21 +193,40 @@ def step_impl(context):
 
 
 @then(
-    "the physical structMap of the AIP METS accurately reflects "
-    "the physical layout of the AIP"
+    "the dmdSecs for Dublin Core records exist for the transfer objects in the structMap"
+)
+def step_impl(context):
+    mets = metsrw.METSDocument.fromfile(context.current_transfer["aip_mets_location"])
+    original_file_labels = [
+        fsentry.label for fsentry in mets.all_files() if fsentry.use == "original"
+    ]
+    dmd_sec_ids = utils.retrieve_dmd_sec_ids(mets.tree, "DC", nsmap=context.mets_nsmap)
+    transfer_dir = utils.get_transfer_dir_from_structmap(
+        mets.tree,
+        context.current_transfer["transfer_name"],
+        context.current_transfer["sip_uuid"],
+        nsmap=context.mets_nsmap,
+    )
+    structmap_dmd_ids = utils.extract_dmd_ids_from_structmap_items(
+        transfer_dir, original_file_labels
+    )
+    error = "The {} file does not contain an DC dmdSec: {} for the files described in the structmap: {} ".format(
+        context.current_transfer["aip_mets_location"], dmd_sec_ids, structmap_dmd_ids
+    )
+    assert set(dmd_sec_ids).issubset(structmap_dmd_ids), error
+
+
+@then(
+    "the physical structMap of the AIP METS accurately reflects the physical layout of the AIP"
 )
 def step_impl(context):
     root_path = os.path.join(context.current_transfer["extracted_aip_dir"], "data")
     tree = etree.parse(context.current_transfer["aip_mets_location"])
-    structmap = tree.find(
-        'mets:structMap[@TYPE="physical"]', namespaces=context.mets_nsmap
-    )
-    transfer_dir = structmap.find(
-        'mets:div[@LABEL="{}-{}"][@TYPE="Directory"]'.format(
-            context.current_transfer["transfer_name"],
-            context.current_transfer["sip_uuid"],
-        ),
-        namespaces=context.mets_nsmap,
+    transfer_dir = utils.get_transfer_dir_from_structmap(
+        tree,
+        context.current_transfer["transfer_name"],
+        context.current_transfer["sip_uuid"],
+        nsmap=context.mets_nsmap,
     )
     error = (
         'The {} file does not contain any "Directory" entries in its physical '

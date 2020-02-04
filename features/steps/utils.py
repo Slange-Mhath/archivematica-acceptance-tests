@@ -566,6 +566,15 @@ def get_premis_events_by_type(entry, event_type):
     return [ev for ev in entry.get_premis_events() if ev.type == event_type]
 
 
+def get_transfer_dir_from_structmap(tree, transfer_name, sip_uuid, nsmap={}):
+    structmap = tree.find('mets:structMap[@TYPE="physical"]', namespaces=nsmap)
+    transfer_dir = structmap.find(
+        'mets:div[@LABEL="{}-{}"][@TYPE="Directory"]'.format(transfer_name, sip_uuid),
+        namespaces=nsmap,
+    )
+    return transfer_dir
+
+
 def get_path_before_sanitization(entry, transfer_contains_objects_dir=False):
     clean_name_premis_events = get_premis_events_by_type(entry, "name cleanup")
     if not clean_name_premis_events:
@@ -588,6 +597,40 @@ def get_path_before_sanitization(entry, transfer_contains_objects_dir=False):
         return result[8:]
     else:
         return result
+
+
+def extract_dmd_ids_from_structmap_items(item, original_files, dmd_ids=[]):
+    label = item.attrib.get("LABEL")
+    DMDID_ATTRIB = "DMDID"
+    if label:
+        if item.attrib["TYPE"] == "Item":
+            if item.attrib.get(DMDID_ATTRIB):
+                # e.g. DMDID="dmdSec_3 dmdSec_4".
+                [
+                    dmd_ids.append(id_)
+                    for id_ in item.attrib.get(DMDID_ATTRIB).split(" ")
+                ]
+            else:
+                if label in original_files:
+                    raise ValueError(
+                        "Missing DMDID for the given transfer item: {} {}".format(
+                            original_files, label
+                        )
+                    )
+        elif item.attrib["TYPE"] == "Directory":
+            if item.attrib.get(DMDID_ATTRIB):
+                [
+                    dmd_ids.append(id_)
+                    for id_ in item.attrib.get(DMDID_ATTRIB).split(" ")
+                ]
+        else:
+            msg = "Cannot handle structMap items with attribute " 'TYPE "{}"'.format(
+                item.attrib["TYPE"]
+            )
+            raise ValueError(msg)
+        for child in item:
+            extract_dmd_ids_from_structmap_items(child, original_files, dmd_ids)
+    return dmd_ids
 
 
 def assert_structmap_item_path_exists(item, root_path, parent_path=""):
@@ -617,6 +660,17 @@ def is_valid_download(path):
     assert path, errors["path"]
     assert os.path.isfile(path), errors["validate"]
     assert os.stat(path).st_size >= 1, errors["size"]
+
+
+def retrieve_dmd_sec_ids(tree, md_type=None, nsmap={}):
+    dmd_sec_ids = []
+    dmd_secs = tree.findall("mets:dmdSec", namespaces=nsmap)
+    for dmd in dmd_secs:
+        dmd_sec_id = dmd.get("ID")
+        for md in dmd:
+            if md.get("MDTYPE") == md_type:
+                dmd_sec_ids.append(dmd_sec_id)
+    return dmd_sec_ids
 
 
 def get_filesec_files(tree, use=None, nsmap={}):
